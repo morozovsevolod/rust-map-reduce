@@ -42,10 +42,11 @@ impl WorkerNode for WorkerService {
 
         let input: Vec<u8> = data.into_iter().map(|b| b as u8).collect();
 
-        if let Err(_) = self
+        if self
             .pool
             .submit_map_task(job_id, task_id, task_name, input, num_reduce_tasks)
             .await
+            .is_err()
         {
             return Err(Status::resource_exhausted("Failed to submit map task"));
         }
@@ -69,10 +70,11 @@ impl WorkerNode for WorkerService {
             locations,
         } = request.into_inner();
 
-        if let Err(_) = self
+        if self
             .pool
             .submit_reduce_task(job_id, task_id, task_name, key, locations)
             .await
+            .is_err()
         {
             return Err(Status::resource_exhausted("Failed to submit reduce task"));
         }

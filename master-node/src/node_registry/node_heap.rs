@@ -185,7 +185,7 @@ impl NodeRegistry {
     ) -> JobId {
         let mut job = Job::new(task_name, partitions.clone(), num_reduce_tasks);
 
-        for (partition_id, _) in &partitions {
+        for partition_id in partitions.keys() {
             let task = Task::new_map(job.id, *partition_id, num_reduce_tasks);
             job.map_task_ids.insert(task.id);
             job.pending_map_count += 1;
@@ -372,11 +372,10 @@ impl NodeRegistry {
             }
 
             if task.is_map() {
-                if let Some(keys) = reduce_keys {
-                    if let Some(w) = self.workers.get_mut(&worker_id) {
+                if let Some(keys) = reduce_keys
+                    && let Some(w) = self.workers.get_mut(&worker_id) {
                         w.map_reduce_keys.insert(task_id, keys);
                     }
-                }
 
                 let should_schedule = if let Some(job) = self.jobs.get_mut(&job_id) {
                     job.pending_map_count = job.pending_map_count.saturating_sub(1);
@@ -393,15 +392,13 @@ impl NodeRegistry {
                 if should_schedule {
                     self.schedule_reduce_phase(job_id);
                 }
-            } else {
-                if let Some(job) = self.jobs.get_mut(&job_id) {
-                    if let TaskKind::Reduce { key, .. } = task.kind {
-                        job.completed_reduces.insert(key, worker_id);
-                    }
-                    job.pending_reduce_count = job.pending_reduce_count.saturating_sub(1);
-                    if job.is_reduce_phase_done() {
-                        job.state = JobState::Completed;
-                    }
+            } else if let Some(job) = self.jobs.get_mut(&job_id) {
+                if let TaskKind::Reduce { key, .. } = task.kind {
+                    job.completed_reduces.insert(key, worker_id);
+                }
+                job.pending_reduce_count = job.pending_reduce_count.saturating_sub(1);
+                if job.is_reduce_phase_done() {
+                    job.state = JobState::Completed;
                 }
             }
         } else {
@@ -448,10 +445,8 @@ impl NodeRegistry {
         if task.attempts < MAX_TASK_ATTEMPTS {
             task.state = TaskState::Idle;
             self.pending_tasks.push_back(task);
-        } else {
-            if let Some(job) = self.jobs.get_mut(&task.job_id) {
-                job.state = JobState::Failed(format!("task {} exceeded max attempts", task.id));
-            }
+        } else if let Some(job) = self.jobs.get_mut(&task.job_id) {
+            job.state = JobState::Failed(format!("task {} exceeded max attempts", task.id));
         }
     }
 }

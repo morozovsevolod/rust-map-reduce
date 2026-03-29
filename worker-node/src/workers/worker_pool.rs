@@ -184,7 +184,7 @@ impl WorkerPool {
                 };
 
                 for (k, list) in response.data {
-                    merged.entry(k).or_insert_with(Vec::new).extend(list.data);
+                    merged.entry(k).or_default().extend(list.data);
                 }
             }
 
@@ -397,7 +397,7 @@ async fn execute_map(
         let partition_id = calculate_partition(&key, num_reduce_partitions);
         job_store
             .entry(partition_id)
-            .or_insert_with(Vec::new)
+            .or_default()
             .push((key, Bytes::from(value)));
 
         if !partition_ids.contains(&partition_id) {

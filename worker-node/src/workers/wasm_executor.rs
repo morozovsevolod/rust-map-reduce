@@ -72,11 +72,10 @@ impl WasmExecutor {
         };
         let mut out = Vec::new();
         for pair in list {
-            if let Val::Tuple(vals) = pair {
-                if let (Val::String(k), Val::String(v)) = (&vals[0], &vals[1]) {
+            if let Val::Tuple(vals) = pair
+                && let (Val::String(k), Val::String(v)) = (&vals[0], &vals[1]) {
                     out.push((k.to_string(), v.to_string()));
                 }
-            }
         }
         Ok(out)
     }
@@ -92,14 +91,14 @@ impl WasmExecutor {
             .get_func(&mut store, "freduce")
             .ok_or_else(|| anyhow!("Failed to read `freduce` function from the {file}"))?;
 
-        let mut results = vec![Val::String(String::new().into())];
+        let mut results = vec![Val::String(String::new())];
         let vals = values
             .into_iter()
-            .map(|s| Val::String(s.into()))
+            .map(Val::String)
             .collect::<Vec<_>>();
         freduce.call(
             &mut store,
-            &[Val::String(key.into()), Val::List(vals)],
+            &[Val::String(key), Val::List(vals)],
             &mut results,
         )?;
 
