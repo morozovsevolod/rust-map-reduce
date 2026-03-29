@@ -94,7 +94,7 @@ impl WasmExecutor {
         let mut results = vec![Val::String(String::new())];
         let vals = values
             .into_iter()
-            .map(|s| Val::String(s))
+            .map(Val::String)
             .collect::<Vec<_>>();
         freduce.call(
             &mut store,
