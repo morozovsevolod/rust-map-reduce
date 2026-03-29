@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
     info!("Starting server");
     let Config { addr, .. } = load_config()?;
 
-    let (tx, rx) = mpsc::channel(32).into();
+    let (tx, rx) = mpsc::channel(32);
 
     let tx_clone = tx.clone();
     spawn(async move {
@@ -34,7 +34,7 @@ async fn main() -> Result<()> {
 
     sleep(Duration::from_secs(5)).await;
 
-    let addr = format!("{addr}").parse().unwrap();
+    let addr = addr.to_string().parse().unwrap();
     let _ = Server::builder()
         .add_service(MasterNodeServer::new(MasterNodeService::new(tx, 16)))
         .serve(addr)
