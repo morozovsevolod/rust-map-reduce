@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package worker_node;
+
+service WorkerNode {
+    rpc SubmitMap(SubmitMapRequest) returns (SubmitMapResponse);
+    rpc SubmitReduce(SubmitReduceRequest) returns (SubmitReduceResponse);
+    rpc ReceiveIntermediateData(ReceiveIntermediateDataRequest) returns (ReceiveIntermediateDataResponse);
+    rpc ReceiveReduceResult(ReceiveReduceResultRequest) returns (ReceiveReduceResultResponse);
+}
+
+message SubmitMapRequest {
+    string jobId = 1;
+    string taskId = 2;
+    string taskName = 3;
+    uint32 numReduceTasks = 4;
+    repeated int32 data = 5;
+}
+
+message SubmitMapResponse {
+    bool success = 1;
+}
+
+message SubmitReduceRequest {
+    string jobId = 1;
+    string taskId = 2;
+    string taskName = 3;
+    int32 key = 4;
+    repeated string locations = 5;
+}
+
+message SubmitReduceResponse {
+    bool success = 1;
+}
+
+message ReceiveIntermediateDataRequest {
+    string jobId = 1;
+    int32 key = 2;
+}
+
+message ReceiveIntermediateDataResponse {
+    bool success = 1;
+    map<string, StringList> data = 2;
+}
+
+message StringList {
+    repeated string data = 1;
+}
+
+message ReceiveReduceResultRequest {
+    string jobId = 1;
+    int32 key = 2;
+}
+
+message ReceiveReduceResultResponse {
+    bool success = 1;
+    optional string data = 2;
+}

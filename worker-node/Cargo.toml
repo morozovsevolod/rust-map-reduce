@@ -1,0 +1,26 @@
+[package]
+name = "worker-node"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1"
+tokio = { version = "1.49", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+prost = "0.14"
+tonic = "0.14"
+tonic-prost = "0.14"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+async-trait = "0.1"
+uuid = { version = "1.21", features = ["v4"] }
+tokio-stream = "0.1.18"
+wasmtime = { version = "42", features = ["runtime", "component-model"] }
+itertools = "0.14"
+dashmap = "6.1"
+bytes = "1"
+
+[build-dependencies]
+tonic-prost-build = "0.14"
+tonic-build = "0.14"
