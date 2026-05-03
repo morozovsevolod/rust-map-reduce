@@ -1,0 +1,59 @@
+services:
+  master:
+    build:
+      context: .
+      target: master
+    ports:
+      - "3002:3000"
+      - "50051:50051"
+    networks:
+      - mapreduce
+
+  worker1:
+    build:
+      context: .
+      target: worker
+    command: ["http://master:50051", "worker1", "4", "3001"]
+    ports:
+      - "3004:3001"
+    networks:
+      - mapreduce
+    depends_on:
+      - master
+
+  worker2:
+    build:
+      context: .
+      target: worker
+    command: ["http://master:50051", "worker2", "4", "3001"]
+    ports:
+      - "3005:3001"
+    networks:
+      - mapreduce
+    depends_on:
+      - master
+
+  worker3:
+    build:
+      context: .
+      target: worker
+    command: ["http://master:50051", "worker3", "4", "3001"]
+    ports:
+      - "3006:3001"
+    networks:
+      - mapreduce
+    depends_on:
+      - master
+
+  client:
+    build:
+      context: .
+      target: client
+    entrypoint: ["client"]
+    networks:
+      - mapreduce
+    profiles:
+      - never
+
+networks:
+  mapreduce:

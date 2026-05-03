@@ -1,0 +1,73 @@
+syntax = "proto3";
+package mapreduce;
+
+service WorkerService {
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc GetTask(TaskRequest) returns (TaskAssignment);
+  rpc ReportResult(TaskResult) returns (Empty);
+  rpc ReportFailure(TaskFailure) returns (Empty);
+}
+
+service MasterControl {
+  rpc PollWorkerStatus(PollWorkerStatusRequest) returns (WorkerStatus);
+}
+
+message PollWorkerStatusRequest { string worker_id = 1; }
+
+message HeartbeatRequest {
+  string worker_id = 1;
+  string worker_address = 2;
+  int32 available_slots = 3;
+  string worker_data_url = 4;
+}
+
+message HeartbeatResponse { bool alive = 1; }
+
+message TaskRequest { string worker_id = 1; }
+
+message DataLocation {
+  string url = 1;
+  string file_path = 2;
+}
+
+message TaskAssignment {
+  string task_id = 1;
+  string job_id = 2;
+  string task_type = 3;
+  int32 task_index = 4;
+  oneof payload {
+    MapTaskPayload map_payload = 5;
+    ReduceTaskPayload reduce_payload = 6;
+  }
+}
+
+message MapTaskPayload {
+  string wasm_hash = 1;
+  string chunk_file = 2;
+  int32 num_reduces = 3;
+}
+
+message ReduceTaskPayload {
+  string wasm_hash = 1;
+  int32 partition = 2;
+  repeated DataLocation intermediate_files = 3;
+}
+
+message TaskResult {
+  string task_id = 1;
+  string output_file = 2;
+  string worker_data_url = 3;
+}
+
+message TaskFailure {
+  string task_id = 1;
+  string reason = 2;
+}
+
+message WorkerStatus {
+  repeated string active_tasks = 1;
+  repeated string finished_tasks = 2;
+  int32 available_slots = 3;
+}
+
+message Empty {}

@@ -1,3 +1,9 @@
 [workspace]
-members = ["master-node", "worker-node"]
+members = ["proto", "task", "master", "worker", "client"]
 resolver = "2"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

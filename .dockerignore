@@ -1,0 +1,10 @@
+target/
+.idea/
+*.wbp
+*.suo
+*.sln
+*.suo
+*.log
+**/*.pyc
+.git/
+.env/
