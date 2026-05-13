@@ -87,11 +87,11 @@ impl WorkerService for WorkerServiceImpl {
                 }
 
                 if task_id.contains(":map:") {
-                    // Map task — store intermediate location for shuffle
+                    // Map task - store intermediate location for shuffle
                     job.intermediate_locs
                         .insert(task_id.clone(), (req.worker_data_url, req.output_file));
                 } else if task_id.contains(":reduce:") {
-                    // Reduce task — store output location for merge
+                    // Reduce task - store output location for merge
                     job.reduce_outputs
                         .push((req.worker_data_url, req.output_file));
                 }

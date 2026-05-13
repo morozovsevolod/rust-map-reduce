@@ -127,7 +127,7 @@ async fn fetch_file(url: &str, dest: &std::path::Path) -> Result<(), String> {
     Ok(())
 }
 
-/// Resolve WASM module — fetch from master if not cached locally.
+/// Resolve WASM module - fetch from master if not cached locally.
 async fn resolve_wasm(
     state: &WorkerState,
     master_url: &str,
@@ -168,7 +168,7 @@ async fn execute_map(
     let chunk_url = format!("{}/{}", master_url, chunk_path);
     fetch_file(&chunk_url, &chunk_local).await?;
 
-    // Run WASM map function — produces raw key\tvalue lines
+    // Run WASM map function - produces raw key\tvalue lines
     let map_output = job_dir.join("map_raw.out");
     let output_size = crate::wasm_runtime::execute_map(
         &wasm,
@@ -309,7 +309,7 @@ async fn execute_task(
     }
 }
 
-/// Report task completion — file path + data URL, no data transfer.
+/// Report task completion - file path + data URL, no data transfer.
 async fn report_result(
     client: &mut WorkerServiceClient<Channel>,
     task_id: &str,
@@ -341,7 +341,7 @@ async fn report_failure(client: &mut WorkerServiceClient<Channel>, task_id: &str
     }
 }
 
-/// Fast hash for partitioning — consistent within a single job run.
+/// Fast hash for partitioning - consistent within a single job run.
 fn fast_hash(bytes: &[u8]) -> u64 {
     use std::collections::hash_map::DefaultHasher;
     let mut h = DefaultHasher::new();

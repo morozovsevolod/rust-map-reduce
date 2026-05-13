@@ -4,8 +4,6 @@ use std::sync::Arc;
 use std::time::Instant;
 use tokio::sync::RwLock;
 
-/// Metadata-only state. All data files live on disk.
-
 #[derive(Debug, Clone, PartialEq)]
 pub enum JobStatus {
     Pending,
@@ -60,7 +58,6 @@ pub struct Worker {
     pub finished_tasks: HashMap<String, ()>,
     pub last_heartbeat: Instant,
     pub poll_counter: u32,
-    /// Base URL for fetching intermediate files (e.g., "http://10.0.0.5:8080")
     pub data_url: String,
 }
 

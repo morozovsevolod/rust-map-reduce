@@ -102,7 +102,7 @@ pub async fn submit_job(
         }
     };
 
-    // Remove the raw input file — we only need chunks
+    // Remove the raw input file - we only need chunks
     let _ = std::fs::remove_file(&input_path);
 
     // Build map and reduce task metadata
@@ -236,7 +236,7 @@ pub async fn job_status(
         .into_response()
 }
 
-/// Download job result — streams from disk file.
+/// Download job result - streams from disk file.
 pub async fn job_result(
     Path(job_id): Path<String>,
     State(state): State<Arc<SharedState>>,
@@ -273,5 +273,3 @@ pub async fn job_result(
         }
     }
 }
-
-// Router is created in mod.rs to allow adding file-serving routes with same state

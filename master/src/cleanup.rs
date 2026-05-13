@@ -10,20 +10,18 @@ use http_body::Frame;
 use crate::state::SharedState;
 use crate::storage;
 
-/// Delay (seconds) after result response body completes before cleanup begins.
+/// Delay after result response body completes before cleanup begins.
 const CLEANUP_DELAY_SECS: u64 = 30;
 
 /// Build a response that schedules cleanup only after the response body is fully consumed.
 ///
 /// The result bytes are buffered in memory, so cleanup deleting the disk file
 /// doesn't affect the response. The cleanup timer is spawned in the stream's
-/// `poll_next` after the data is yielded — which happens when axum finishes
+/// `poll_next` after the data is yielded - which happens when axum finishes
 /// writing all bytes to the socket and the stream completes.
 ///
 /// Additionally, even with the stream completing immediately, there's a 30s
-/// safety delay. By the time the stream yields, the file has already been
-/// read (async I/O), giving ~30s + read time head start. This is more than
-/// enough for the client to receive the response.
+/// safety delay.
 pub fn result_response(
     bytes: Vec<u8>,
     state: Arc<SharedState>,

@@ -1,8 +1,8 @@
 use std::io::{BufRead, Read, Seek, Write};
 use std::path::{Path, PathBuf};
 
-const CHUNK_MIN: u64 = 16 * 1024 * 1024; // 16 MB
-const CHUNK_MAX: u64 = 64 * 1024 * 1024; // 64 MB
+const CHUNK_MIN: u64 = 16 * 1024 * 1024;
+const CHUNK_MAX: u64 = 64 * 1024 * 1024;
 
 /// Create the directory structure for a job.
 /// Returns (chunks_dir, wasm_dir).
@@ -161,7 +161,7 @@ pub fn remove_job_data(job_id: &str, data_dir: &Path) -> std::io::Result<()> {
 }
 
 /// K-way merge of sorted line-delimited files into a single output file.
-/// Uses minimal memory — reads one line per input at a time.
+/// Uses minimal memory - reads one line per input at a time.
 pub fn merge_sorted_files(inputs: &[PathBuf], output: &Path) -> std::io::Result<()> {
     use std::cmp::Ordering;
     use std::collections::BinaryHeap;

@@ -8,8 +8,8 @@ use crate::state::WorkerState;
 
 /// Start an HTTP status + data server on the given port.
 /// Exposes:
-///   - /status — endpoint for forced polls by the master
-///   - /files/{path} — serve intermediate output files for shuffle
+///   - /status - endpoint for forced polls by the master
+///   - /files/{path} - serve intermediate output files for shuffle
 pub async fn start_status_server(state: Arc<WorkerState>, port: u16) -> std::io::Result<()> {
     let addr = format!("0.0.0.0:{}", port);
     let listener = tokio::net::TcpListener::bind(&addr).await?;

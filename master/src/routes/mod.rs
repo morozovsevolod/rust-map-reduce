@@ -33,9 +33,6 @@ pub async fn serve_chunk(
 }
 
 /// Serve a WASM module: GET /wasm/{hash}.wasm
-/// Note: in axum 0.7 (matchit 0.7), the `.wasm` literal in the route pattern
-/// is matched but NOT stripped from the captured parameter, so `hash` already
-/// includes the `.wasm` extension. Use it directly as the filename.
 pub async fn serve_wasm(
     State(state): State<Arc<SharedState>>,
     Path(filename): Path<String>,

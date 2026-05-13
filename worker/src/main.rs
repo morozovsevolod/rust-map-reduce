@@ -30,7 +30,6 @@ async fn main() {
         .unwrap_or(3001);
 
     // Derive master HTTP data server URL from gRPC URL
-    // master_url = http://master:50051 → master_http_url = http://master:3000
     let master_http_url = std::env::args().nth(5).unwrap_or_else(|| {
         if let Some(host_port) = master_url.strip_prefix("http://") {
             let host = host_port.split(':').next().unwrap_or("127.0.0.1");

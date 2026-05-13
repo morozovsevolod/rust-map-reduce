@@ -308,7 +308,7 @@ mod tests {
         let input_path = tmp.with_extension("in");
         let output_path = tmp.with_extension("out");
 
-        // 64K lines, ~300KB — exceeds initial 17-page memory
+        // 64K lines, ~300KB - exceeds initial 17-page memory
         let large_input: String = (0..64 * 1024).map(|i| format!("line_{:04}\n", i)).collect();
         fs::write(&input_path, &large_input).expect("failed to write input");
 
