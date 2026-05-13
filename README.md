@@ -17,7 +17,6 @@ The built-in `task` crate implements word-count → dedup. Any WASM module expor
 |-------|------|
 | `master` | Coordinator. Two ports: HTTP 3000 (REST for clients, file serving) and gRPC 50051 (worker communication). Holds zero data buffers - everything lives on disk. |
 | `worker` | Runs tasks. Pulls work from master, executes WASM via Wasmtime, serves intermediate files over HTTP. |
-| `client` | CLI for submitting jobs, checking status, downloading results. |
 | `task` | Example WASM module (word count). Compiles to `wasm32-unknown-unknown`, no stdlib. |
 | `proto` | Shared gRPC types generated from `.proto`. |
 

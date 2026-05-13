@@ -1,5 +1,5 @@
 [workspace]
-members = ["proto", "task", "master", "worker", "client"]
+members = ["proto", "task", "master", "worker"]
 resolver = "2"
 
 [profile.dev]
