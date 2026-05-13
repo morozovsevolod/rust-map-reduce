@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 tonic = "0.12"
 prost = "0.13"
-axum = "0.7"
+axum = "0.8.9"
 tokio = { version = "1", features = ["full"] }
 wasmtime = "28"
 wasmtime-wasi = "28"
